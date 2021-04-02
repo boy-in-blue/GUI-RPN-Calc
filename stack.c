@@ -7,29 +7,38 @@ struct Stack
 {
     int top;
     unsigned capacity;
-    int* array;
+    int *array;
 };
 
-struct Stack* create_stack(unsigned capacity)
+struct Stack *create_stack(unsigned capacity)
 {
-    struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
+    struct Stack *stack = (struct Stack *)malloc(sizeof(struct Stack));
     stack->capacity = capacity;
     stack->top = -1;
-    stack->array = (int*)malloc(stack->capacity * sizeof(int));
+    stack->array = (int *)malloc(stack->capacity * sizeof(int));
+    for (int i = 0; i < capacity; i++)
+    {
+        stack->array[i] = 0;
+    }
     return stack;
 }
 
-int is_full(struct Stack* stack)
+int *get_all_values(struct Stack *stack)
+{
+    return stack->array;
+}
+
+int is_full(struct Stack *stack)
 {
     return stack->top == stack->capacity - 1;
 }
 
-int is_empty(struct Stack* stack)
+int is_empty(struct Stack *stack)
 {
     return stack->top == -1;
 }
 
-void push(struct Stack* stack, int item)
+void push(struct Stack *stack, int item)
 {
     if (is_full(stack))
     {
@@ -43,8 +52,9 @@ void push(struct Stack* stack, int item)
     }
 }
 
-int pop(struct Stack* stack)
+int pop(struct Stack *stack)
 {
+    int rv;
     if (is_empty(stack))
     {
         printf("Stack is empty\n");
@@ -52,12 +62,14 @@ int pop(struct Stack* stack)
     }
     else
     {
-        return stack->array[stack->top--];
+        rv = stack->array[stack->top];
+        stack->array[stack->top] = 0;
+        stack->top--;
+        return rv;
     }
 }
 
-int get_top(struct Stack* stack)
+int get_top(struct Stack *stack)
 {
     return stack->top;
 }
-
